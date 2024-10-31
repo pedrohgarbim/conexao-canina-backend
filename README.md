@@ -2,10 +2,6 @@
  
 # 🐾 Conexão Canina - Backend
 
-### 🚨 **Atenção:** 
-- Não apagar a branch `dev construção dominio` 🛑
-- A Wiki está em construção 📝
-
 ---
 
 ## 🚀 Passo a passo de como entregar uma task
