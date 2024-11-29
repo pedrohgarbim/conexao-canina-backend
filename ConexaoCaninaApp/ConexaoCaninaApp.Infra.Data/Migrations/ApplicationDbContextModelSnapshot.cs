@@ -22,147 +22,140 @@ namespace ConexaoCaninaApp.Infra.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Album", b =>
-                {
-                    b.Property<int>("AlbumId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlbumId"), 1L, 1);
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Privacidade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProprietarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AlbumId");
-
-                    b.ToTable("Albuns");
-                });
-
             modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Cao", b =>
                 {
-                    b.Property<int>("CaoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CaoId"), 1L, 1);
+                    b.Property<Guid>("CaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CaracteristicasUnicas")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Cidade")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Descricao")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Genero")
                         .HasColumnType("int");
 
                     b.Property<int>("Idade")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("ProprietarioId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Raca")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RequisitosCruzamentoId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("Tamanho")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("CaoId");
 
-                    b.HasIndex("ProprietarioId");
-
-                    b.HasIndex("RequisitosCruzamentoId");
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Caes");
                 });
 
+            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Favorito", b =>
+                {
+                    b.Property<Guid>("FavoritoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("_caoId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CaoId");
+
+                    b.HasKey("FavoritoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.HasIndex("_caoId");
+
+                    b.ToTable("Favoritos");
+                });
+
             modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Foto", b =>
                 {
-                    b.Property<int>("FotoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FotoId"), 1L, 1);
-
-                    b.Property<int>("AlbumId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("FotoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CaminhoArquivo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("CaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Ordem")
-                        .HasColumnType("int");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("FotoId");
-
-                    b.HasIndex("AlbumId");
 
                     b.HasIndex("CaoId");
 
                     b.ToTable("Fotos");
                 });
 
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.HistoricoSaude", b =>
+            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.HistoricoDeSaude", b =>
                 {
-                    b.Property<int>("HistoricoSaudeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<Guid>("HistoricoSaudeId")
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HistoricoSaudeId"), 1L, 1);
-
-                    b.Property<int>("CaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("CaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CondicoesDeSaude")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("ConsentimentoDono")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("Data")
+                    b.Property<DateTime>("DataExame")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Exame")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Vacinas")
+                    b.Property<string>("Vacina")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("HistoricoSaudeId");
 
@@ -171,178 +164,28 @@ namespace ConexaoCaninaApp.Infra.Data.Migrations
                     b.ToTable("HistoricosDeSaude");
                 });
 
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Like", b =>
-                {
-                    b.Property<int>("LikeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LikeId"), 1L, 1);
-
-                    b.Property<int>("CaoId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataLike")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsLike")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LikeId");
-
-                    b.HasIndex("CaoId");
-
-                    b.ToTable("Likes");
-                });
-
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Localizacao", b =>
-                {
-                    b.Property<int>("LocalizacaoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocalizacaoId"), 1L, 1);
-
-                    b.Property<string>("Cidade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Pais")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("LocalizacaoId");
-
-                    b.ToTable("Localizacoes");
-                });
-
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Proprietario", b =>
-                {
-                    b.Property<int>("ProprietarioId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProprietarioId"), 1L, 1);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LocalizacaoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("LocalizacaoId1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ProprietarioId");
-
-                    b.HasIndex("LocalizacaoId")
-                        .IsUnique();
-
-                    b.HasIndex("LocalizacaoId1");
-
-                    b.ToTable("Proprietarios");
-                });
-
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.RequisitosCruzamento", b =>
-                {
-                    b.Property<int>("RequisitosCruzamentoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequisitosCruzamentoId"), 1L, 1);
-
-                    b.Property<string>("CaracteristicasGeneticas")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Tamanho")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Temperamento")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("RequisitosCruzamentoId");
-
-                    b.ToTable("RequisitosCruzamentos");
-                });
-
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.SolicitacaoCruzamento", b =>
-                {
-                    b.Property<int>("SolicitacaoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SolicitacaoId"), 1L, 1);
-
-                    b.Property<int>("CaoId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataSolicitacao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Mensagem")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SolicitacaoId");
-
-                    b.HasIndex("CaoId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("SolicitacoesCruzamento");
-                });
-
             modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Sugestao", b =>
                 {
-                    b.Property<int>("SugestaoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SugestaoId"), 1L, 1);
+                    b.Property<Guid>("SugestaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataEnvio")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Feedback")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UsuarioId")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("SugestaoId");
 
@@ -353,158 +196,86 @@ namespace ConexaoCaninaApp.Infra.Data.Migrations
 
             modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Usuario", b =>
                 {
-                    b.Property<int>("UsuarioId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UsuarioId"), 1L, 1);
-
-                    b.Property<int?>("AlbumId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Senha")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("UsuarioId");
 
-                    b.HasIndex("AlbumId");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuario");
                 });
 
             modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Cao", b =>
                 {
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.Proprietario", "Proprietario")
+                    b.HasOne("ConexaoCaninaApp.Domain.Models.Usuario", null)
                         .WithMany("Caes")
-                        .HasForeignKey("ProprietarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId")
+                        .HasConstraintName("FK_Cao_Usuario");
+                });
 
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.RequisitosCruzamento", "RequisitosCruzamento")
+            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Favorito", b =>
+                {
+                    b.HasOne("ConexaoCaninaApp.Domain.Models.Usuario", null)
+                        .WithMany("Favoritos")
+                        .HasForeignKey("UsuarioId")
+                        .HasConstraintName("FK_Like_Usuario");
+
+                    b.HasOne("ConexaoCaninaApp.Domain.Models.Cao", "Cao")
                         .WithMany()
-                        .HasForeignKey("RequisitosCruzamentoId")
+                        .HasForeignKey("_caoId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Favoritos_Cao");
 
-                    b.Navigation("Proprietario");
-
-                    b.Navigation("RequisitosCruzamento");
+                    b.Navigation("Cao");
                 });
 
             modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Foto", b =>
                 {
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.Album", "Album")
-                        .WithMany("Fotos")
-                        .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.Cao", "Cao")
+                    b.HasOne("ConexaoCaninaApp.Domain.Models.Cao", null)
                         .WithMany("Fotos")
                         .HasForeignKey("CaoId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Album");
-
-                    b.Navigation("Cao");
+                        .HasConstraintName("FK_Foto_Cao");
                 });
 
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.HistoricoSaude", b =>
+            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.HistoricoDeSaude", b =>
                 {
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.Cao", "Cao")
+                    b.HasOne("ConexaoCaninaApp.Domain.Models.Cao", null)
                         .WithMany("HistoricosDeSaude")
                         .HasForeignKey("CaoId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cao");
-                });
-
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Like", b =>
-                {
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.Cao", "Cao")
-                        .WithMany("Likes")
-                        .HasForeignKey("CaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cao");
-                });
-
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Proprietario", b =>
-                {
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.Localizacao", "Localizacao")
-                        .WithOne()
-                        .HasForeignKey("ConexaoCaninaApp.Domain.Models.Proprietario", "LocalizacaoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.Localizacao", null)
-                        .WithMany("Proprietarios")
-                        .HasForeignKey("LocalizacaoId1");
-
-                    b.Navigation("Localizacao");
-                });
-
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.SolicitacaoCruzamento", b =>
-                {
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.Cao", "Cao")
-                        .WithMany()
-                        .HasForeignKey("CaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cao");
-
-                    b.Navigation("Usuario");
+                        .HasConstraintName("FK_HistoricoSaude_Cao");
                 });
 
             modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Sugestao", b =>
                 {
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.Usuario", "Usuario")
-                        .WithMany()
+                    b.HasOne("ConexaoCaninaApp.Domain.Models.Usuario", null)
+                        .WithMany("Sugestoes")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Usuario", b =>
-                {
-                    b.HasOne("ConexaoCaninaApp.Domain.Models.Album", null)
-                        .WithMany("UsuariosPermitidos")
-                        .HasForeignKey("AlbumId");
-                });
-
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Album", b =>
-                {
-                    b.Navigation("Fotos");
-
-                    b.Navigation("UsuariosPermitidos");
+                        .HasConstraintName("FK_Sugestao_Usuario");
                 });
 
             modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Cao", b =>
@@ -512,18 +283,15 @@ namespace ConexaoCaninaApp.Infra.Data.Migrations
                     b.Navigation("Fotos");
 
                     b.Navigation("HistoricosDeSaude");
-
-                    b.Navigation("Likes");
                 });
 
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Localizacao", b =>
-                {
-                    b.Navigation("Proprietarios");
-                });
-
-            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Proprietario", b =>
+            modelBuilder.Entity("ConexaoCaninaApp.Domain.Models.Usuario", b =>
                 {
                     b.Navigation("Caes");
+
+                    b.Navigation("Favoritos");
+
+                    b.Navigation("Sugestoes");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,8 +20,9 @@ namespace ConexaoCaninaApp.Application.Services
 
 		public string GetUserId()
 		{
-			return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;	
 		}
+
 		public bool UsuarioEhAdministrador()
 		{
 			var roleClaim = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Role)?.Value;
