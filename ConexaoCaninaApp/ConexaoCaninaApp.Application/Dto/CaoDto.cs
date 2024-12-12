@@ -20,6 +20,8 @@ namespace ConexaoCaninaApp.Application.Dto
 		public string Cidade {  get; set; }
 		public string Estado { get; set; }
 		public List<FotoDTO> Fotos { get; set; }
+		public string CaminhoFoto { get; set; }
+		public string UserId { get; set; }
 		public IEnumerable<HistoricoDeSaudeDto> HistoricosDeSaude { get; set; }
 	}
 }

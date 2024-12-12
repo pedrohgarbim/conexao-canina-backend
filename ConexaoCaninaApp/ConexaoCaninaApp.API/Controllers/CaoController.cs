@@ -3,6 +3,7 @@ using ConexaoCaninaApp.Application.Interfaces;
 using ConexaoCaninaApp.Application.Requests;
 using ConexaoCaninaApp.Application.Services;
 using ConexaoCaninaApp.Application.ViewModel;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.PortableExecutable;
 
@@ -43,11 +44,37 @@ namespace ConexaoCaninaApp.API.Controllers
 				}).ToList(),
 				Size = x.Tamanho.ToString(),
 				State = x.Estado,
+				CaminhoFoto = x.CaminhoFoto,
 				UniqueCharacteristics = x.CaracteristicasUnicas,
 			}));
 		}
-		// GetById -> detalhes com historico de saude
-		[HttpGet]
+
+		[HttpPost]
+		[Route("criar")]
+		public async Task<IActionResult> CriarCao([FromBody] CriarCaoRequest request)
+		{
+			if (request == null)
+				return BadRequest();
+
+			var result = _caoService.CriarCao(new CaoDTO
+			{
+				Nome = request.Nome,
+				Raca = request.Raca,
+				Idade = request.Idade,
+				Descricao = request.Descricao,
+				Genero = request.Genero,
+				Tamanho = request.Tamanho,
+				CaracteristicasUnicas = request.CaracteristicasUnicas,
+				Cidade = request.Cidade,
+				Estado = request.Estado,
+				Fotos = request.Fotos,
+				CaminhoFoto = request.CaminhoFoto,
+				HistoricosDeSaude = request.HistoricosDeSaude,				
+			});
+			return Ok();
+		}
+
+        [HttpGet]
 		[Route("{id}")]
 		public async Task<IActionResult> GetById(Guid id)
 		{
